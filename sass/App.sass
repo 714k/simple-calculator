@@ -1,0 +1,191 @@
+// compileCompressed: ../css/$1.min.css
+$calculatorBG: #fff
+$displayBG: #fff
+$historyText: #aab6cc
+$numberColorBG: transparent
+$numberColor: #001f47
+$equalBG: rgba(255, 107, 0, 0.85)
+
+
+body
+  background-color: #E8E3E7
+
+.container-calculator
+  padding: 0
+
+.bg-calculator
+  position: absolute
+  top: 1em
+  // left: 1em
+  display: block
+  width: 24em
+  margin: 0 1em
+  height: 44em
+  background-color: #fff
+  box-shadow: 0px 0px 100px 10px #999
+  box-shadow: 0.5em -0.5em 20px #999
+
+  i
+    position: absolute
+    width: 100%
+    font-style: normal
+    text-align: center
+    bottom: 0.75em
+    z-index: 5
+
+    a:hover
+      text-decoration: none
+      color: $equalBG
+
+  // -webkit-box-shadow: 0px 0px 100px 10px #242424, 0px 0px  1px 0px #000, 0px 0px 2px 1px #000
+  // -moz-box-shadow: 0px 0px 100px 10px #242424, 0px 0px 1px 0px #000, 0px 0px 2px 1px #000
+
+#calculator
+  font-family: 'Rajdhani', sans-serif
+  float: left
+  margin-top: 1em
+  padding: 0 0 2em 0
+  height: 45em
+  // border: solid 5px #333
+  // background-color: $calculatorBG
+
+  #display
+    margin: 0.5em 0 1.5em 2em
+    width: 22em
+    padding: 0
+    height: 10em
+    text-align: left
+    // box-shadow: inset 0px 0px 42px -8px #000000
+    // background-color: $displayBG
+
+    p
+      padding: 0
+
+    #messages
+      display: inline-block
+      margin-bottom: 0px
+      padding: 0
+      font-size: 1.25em
+      text-align: left
+      color: $equalBG
+    strong
+      padding: 0
+      font-weight: normal
+
+    #total
+      height: 60px
+      padding-right: 10px
+      // margin-left: 20px
+      margin-top: 5px
+      font-size: 4em
+      line-height: 1em
+      text-align: right
+      color: white
+      background-color: rgba(0, 31, 71, 0.75)
+      box-shadow: 5px -5px 6px rgba(0,0,0,0.5)
+
+
+      &.small
+        padding: 0 10px 0 0
+        font-size: 1.8em
+        line-height: 2em
+
+    #history
+      word-wrap: break-word
+      height: 46px
+      // padding-right: 10px
+      margin-bottom: 10px
+      font-size: 1.5em
+      line-height: 1em
+      color: $historyText
+
+      &.small
+        // padding: 0 0.5em
+        font-size: 1.1em
+        // line-height: 2em
+
+
+
+  #keys
+    // border-left: solid 5px #333
+    // padding: 1em 0
+    position: absolute
+    float: left
+    width: 100%
+    width: 22em
+    margin: 0
+    padding-left: 1em
+    background-color: rgba(0, 31, 71, 0.75)
+    box-shadow: 0.4em -0.4em 6px rgba(0,0,0,0.5)
+
+    .col-md-12, .col-md-9
+      padding: 0 1px
+    .button
+      display: inline-block
+      text-align: center
+      font-size: 1.75em
+      // width: 100%
+      // height: auto
+      padding: 0
+      // margin: 1px
+      // margin: 1px
+      border: none
+      // border: solid 2px $calculatorBG
+      background-color: $numberColorBG
+      color: $numberColor
+      cursor: default
+
+      span
+        font-size: 1.25em
+        display: inline-block
+        margin: 0.25em
+        width: 2em
+        height: 2em
+        line-height: 2em
+        // color: rgba(0, 31, 71, 0.75)
+        // padding: 1em
+        border-radius: 2em
+
+        &:hover
+          // background-color: rgba(0, 31, 71, 0.75)
+          // box-shadow: inset 0em 0em 8px rgba(0, 0, 0, 1)
+          // background-color: white
+          // transform: scale(1.2)
+          background-color: rgba(0, 31, 71, 0.75)
+          transition: background-color 0.35s
+          color: white
+          // cursor: pointer
+          // box-shadow: 0 0 6px rgba(0,0,0,0.5)
+      &.press
+        // background-color: red
+        // border: solid 1px $calculatorBG
+        transform: scale(0.95)
+        -webkit-transform: scale(0.95)
+        -moz-transform: scale(0.95)
+        // box-shadow: inset 0 0 40px 1px #111
+
+      &:focus
+        // border: none
+
+    .equal
+      position: absolute
+      bottom: -1em
+      right: -1em
+      padding: 0
+
+      span
+        font-size: 3em
+        padding: 1.2em 0.1em
+        background-color: $equalBG
+        // background-color: rgba(0, 31, 71, 0.75)
+        color: white
+        box-shadow: 5px -5px 6px rgba(0,0,0,0.3)
+        // transform: scale(0.9)
+
+        &:hover
+          // transform: scale(0.9)
+          transition: background 0.25s
+          // box-shadow: 5px -5px 6px rgba(0,0,0,0.5)
+          // box-shadow: none
+          // cursor: pointer
+          background-color: rgba(255, 107, 0, 1)
