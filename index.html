@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Simple Calculator</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
-    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet"> -->
     <link rel="stylesheet" href="/css/App.min.css" media="screen" title="no title" charset="utf-8">
   </head>
   <body ng-app="simpleCalculatorApp">
@@ -14,49 +14,49 @@
         <div id="calculator" class="col-md-12">
           <div id="display" class="row">
             <p class="col-md-12">
-              <span id="messages" class="col-md-12">{{title}}</span>
-              <strong id="history" class="col-md-12 {{sizeMemory}}">{{memoryDisplay ||0}}</strong>
-              <strong id="total" class="col-md-12 {{sizeTotal}}">{{totalDisplay ||0 | number}}</strong><br>
+              <span id="messages" class="col-md-12">{{app.title}}</span>
+              <strong id="history" class="col-md-12 {{app.sizeMemory}}">{{app.memoryDisplay}}</strong>
+              <strong id="total" class="col-md-12 {{app.sizeTotal}}">{{app.totalDisplay}}</strong><br>
             </p>
           </div>
           <div id="keys" class="row">
             <div class="col-md-12">
-              <span class="col-md-3 button" ng-click="clear()"><span>AC</span></span>
-              <span class="col-md-3 button" ng-click="clear()"><span>CE</span></span>
-              <span class="col-md-3 button" ng-click="addOperator('/')"><span>&divide;</span></span>
-              <span class="col-md-3 button" ng-click="addOperator('*')"><span>&times;</span></span>
+              <span class="col-md-3 button" ng-click="app.clearAll()"><span>AC</span></span>
+              <span class="col-md-3 button" ng-click="app.clearAll()"><span>CE</span></span>
+              <span class="col-md-3 button" ng-click="app.addOperator('/')"><span>&divide;</span></span>
+              <span class="col-md-3 button" ng-click="app.addOperator('*')"><span>&times;</span></span>
             </div>
             <div class="col-md-12">
-              <span class="col-md-3 button" ng-click="addEntry(7)"><span>7</span></span>
-              <span class="col-md-3 button" ng-click="addEntry(8)"><span>8</span></span>
-              <span class="col-md-3 button" ng-click="addEntry(9)"><span>9</span></span>
-              <span class="col-md-3 button" ng-click="addOperator('-')"><span>-</span></span>
+              <span class="col-md-3 button" ng-click="app.addEntry(7)"><span>7</span></span>
+              <span class="col-md-3 button" ng-click="app.addEntry(8)"><span>8</span></span>
+              <span class="col-md-3 button" ng-click="app.addEntry(9)"><span>9</span></span>
+              <span class="col-md-3 button" ng-click="app.addOperator('-')"><span>-</span></span>
             </div>
             <div class="col-md-12">
-              <span class="col-md-3 button" ng-click="addEntry(4)"><span>4</span></span>
-              <span class="col-md-3 button" ng-click="addEntry(5)"><span>5</span></span>
-              <span class="col-md-3 button" ng-click="addEntry(6)"><span>6</span></span>
-              <span class="col-md-3 button" ng-click="addOperator('+')"><span>+</span></span>
+              <span class="col-md-3 button" ng-click="app.addEntry(4)"><span>4</span></span>
+              <span class="col-md-3 button" ng-click="app.addEntry(5)"><span>5</span></span>
+              <span class="col-md-3 button" ng-click="app.addEntry(6)"><span>6</span></span>
+              <span class="col-md-3 button" ng-click="app.addOperator('+')"><span>+</span></span>
             </div>
             <div class="col-md-9">
-              <span class="col-md-4 button" ng-click="addEntry(1)"><span>1</span></span>
-              <span class="col-md-4 button" ng-click="addEntry(2)"><span>2</span></span>
-              <span class="col-md-4 button" ng-click="addEntry(3)"><span>3</span></span>
+              <span class="col-md-4 button" ng-click="app.addEntry(1)"><span>1</span></span>
+              <span class="col-md-4 button" ng-click="app.addEntry(2)"><span>2</span></span>
+              <span class="col-md-4 button" ng-click="app.addEntry(3)"><span>3</span></span>
             </div>
             <div class="col-md-3 equal">
-              <span class="col-md-12 button" ng-click="calculate()">=</span>
+              <span class="col-md-12 button" ng-click="app.calculate()">=</span>
             </div>
             <div class="col-md-9">
-              <span class="col-md-8 button zero" ng-click="addEntry(0)"><span>0</span></span>
-              <span class="col-md-4 button" ng-click="addDecimalPoint()"><span>.</span></span>
+              <span class="col-md-8 button zero" ng-click="app.addEntry(0)"><span>0</span></span>
+              <span class="col-md-4 button" ng-click="app.addDecimalPoint()"><span>.</span></span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.6/angular-sanitize.js" charset="utf-8"></script>
+    <script src="js/jquery-2.2.4.min.js" charset="utf-8"></script>
+    <script src="js/angular.min.js" charset="utf-8"></script>
+    <script src="js/angular-sanitize.min.js" charset="utf-8"></script>
     <script src="js/App.js" charset="utf-8"></script>
   </body>
 </html>

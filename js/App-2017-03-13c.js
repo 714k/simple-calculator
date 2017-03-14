@@ -76,45 +76,50 @@ var title = 'simpleCalculator',
             showMessage('Decimal Limit Exceeded');
         }
     },
-    calculateSubtotal = function () {
-        if (memory_str.split(preview_operator_token)[1] === undefined) {
-            preview_amount = 0;
-            current_amount = parseFloat(memory_str.split(preview_operator_token)[0]);
-        }else{
-            if (subtotal === 0) {
-                preview_amount = parseFloat(memory_str.split(preview_operator_token)[0]);
-            }else{
-                preview_amount = subtotal;
-            }
-            current_amount = parseFloat(memory_str.split(preview_operator_token)[1]);
-        }
+    parseAmount = function(){
+        preview_amount = parseFloat(memory_str.split(preview_operator_token)[0]);
+        current_amount = parseFloat(memory_str.split(preview_operator_token)[1]);
+        // calculate();
 
+        // preview_amount = current_amount;
         console.log('preview_amount: ', preview_amount);
-        console.log('current_amount: ', current_amount);
         console.log('preview_operator_token: ', preview_operator_token);
-        console.log('memory_str: ', memory_str);
+        console.log('current_amount: ', current_amount);
+    },
+    calculateSubtotal = function () {
+      switch (preview_operator_token) {
+        case '+':
+          subtotal = preview_amount + current_amount;
+          break;
+        case '-':
+          subtotal = preview_amount - current_amount;
+          break;
+        case '*':
+          subtotal = preview_amount * current_amount;
+          break;
+        case '/':
+          subtotal = preview_amount / current_amount;
+          break;
+        default:
+      }
+      // num_amounts ++;
+      // operations ++;
+      // accumulated_amount_arr.push(
+      //   {
+      //     'operations': operations,
+      //     'preview_amount': preview_amount,
+      //     'operator': preview_operator_token,
+      //     'current_amount': current_amount,
+      //     'accumulated': accumulated_amount
+      //   }
+      // );
 
-        switch (preview_operator_token) {
-            case '+':
-                subtotal = preview_amount + current_amount;
-            break;
-            case '-':
-                subtotal = preview_amount - current_amount;
-            break;
-            case '*':
-                subtotal = preview_amount * current_amount;
-            break;
-            case '/':
-                subtotal = preview_amount / current_amount;
-            break;
-            default:
-        }
-        // showLog('CALCULATE', 'accumulated_amount_arr', syntaxHighlight(accumulated_amount_arr));
-        operator_entries = 0;
-        preview_amount = subtotal;
-        // preview_amount_str = null;
-        console.log('subtotal: ', subtotal);
-        end_single_operation = true;
+      // showLog('CALCULATE', 'accumulated_amount_arr', syntaxHighlight(accumulated_amount_arr));
+      // operator_entries = 0;
+      preview_amount = subtotal;
+      // preview_amount_str = null;
+      console.log('subtotal: ', subtotal);
+      end_single_operation = true;
     };
 
 
@@ -205,20 +210,18 @@ $scope.app = {
             dec_entries = 0;
             decimal_str = '';
             // // preview_amount = parseFloat(memory_str);
-            if (operator_entries === 1) {
-                calculateSubtotal();
-            }
+            // // console.log('preview_amount: ', preview_amount);
 
-            if (operator_entries === 0) {
+            // if (operator_entries === 0) {
             //     // current_amount = parseFloat(memory_str);
             //     // console.log('current_amount: ', current_amount);
-                preview_operator_token = operator;
-                operator_entries ++;
-                console.log('=== 0 > operator_entries: ', operator_entries);
-            }
+            //     preview_operator_token = operator;
+            // }
 
-            console.log('operator_entries: ', operator_entries);
-
+            // if (operator_entries >= 1) {
+            //     parseAmount();
+            //     calculateSubtotal();
+            // }
 
             if (hasOperator === false) {
                 hasOperator = true;
@@ -233,6 +236,7 @@ $scope.app = {
                 $scope.memoryDisplay = memory_str;
                 operator_prev = operator;
             }
+            operator_entries ++;
             // preview_operator_token = operator;
         }else{
             showMessage($scope.app.title);
