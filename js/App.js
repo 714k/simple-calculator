@@ -1,55 +1,49 @@
 angular.module('simpleCalculatorApp', [])
 .controller('simpleCalculatorCtrl', ['$scope', function($scope){
 var title = 'simpleCalculator',
-    memory_length = 0,
-    memory_str = '',
-    max_display_memory = 50,
+    mem_len = 0,
+    mem_str = '',
+    max_display_mem = 50,
     last_char = null,
-    last_visible_char = null,
+    last_vis_char = null,
+    full_mem = '',
 
-    operator_prev = null,
-    hasOperator = false,
+    has_operator = false,
     operator_entries = 0,
-    operator_token = null,
+    prev_operator = null,
 
     int_entries = 0,
     int_str = '',
     max_int_entries = 9,
 
     dec_entries = 0,
-    decimal_str = '',
-    is_decimal = false,
-    decimal_point = '.',
-    has_decimal_point = false,
+    dec_str = '',
+    is_dec = false,
+    dec_point = '.',
+    has_dec_point = false,
     max_dec_entries = 9,
 
-    format_number = null,
+    is_num = null,
     operation_str = '',
     operation_end = false,
+    operation_sep = ' ',
     amount_a = null,
     amount_b = null,
-    amounts_separator = ' ',
-    amount_undefined = true,
-    subtotal = 0,
     total = 0,
-    total_str = '',
-    max_display_total = 9,
 
     showMessage = function (message, warning) {
           $scope.app.warning = warning;
           $scope.app.title = message;
     },
-    displayOperation = function (memory, total, concat) {
-        if (format_number === true) {
-            total = formatNumber(total);
+    displayOperation = function (mem_display, tot_display, concat) {
+        $scope.app.memoryDisplay = mem_display;
+        if (is_num) {
+            tot_display = formatNumber(tot_display);
         }
-
-        $scope.app.memoryDisplay = memory;
-
         if (concat) {
-            $scope.app.totalDisplay += total;
+            $scope.app.totalDisplay += tot_display;
         }else{
-            $scope.app.totalDisplay = total;
+            $scope.app.totalDisplay = tot_display;
         }
     },
     checkOperation = function(){
@@ -60,54 +54,54 @@ var title = 'simpleCalculator',
     addInteger = function(int){
         if (int_entries < max_int_entries) {
             int_str += int;
-            memory_str += int;
+            mem_str += int;
             operation_str += int;
-            displayOperation(memory_str, int_str, false);
+            displayOperation(mem_str, int_str, false);
             int_entries ++;
-            memory_length ++;
+            mem_len ++;
         }else{
             showMessage('Integer Limit Exceeded', true);
         }
     },
     addDecimal = function(dec){
         if (dec_entries < max_dec_entries) {
-            decimal_str += dec;
-            memory_str += dec;
+            dec_str += dec;
+            mem_str += dec;
             operation_str += dec;
-            displayOperation(memory_str, int_str + decimal_point + decimal_str, false);
+            displayOperation(mem_str, int_str + dec_point + dec_str, false);
             dec_entries ++;
-            memory_length ++;
+            mem_len ++;
         }else{
             showMessage('Decimal Limit Exceeded', true);
         }
     },
     calculateSubtotal = function () {
-        amount_a = Number(operation_str.split(amounts_separator)[0]);
-        operator_token = operation_str.split(amounts_separator)[1];
-        amount_b = Number(operation_str.split(amounts_separator)[2]);
+        amount_a = Number(operation_str.split(operation_sep)[0]);
+        prev_operator = operation_str.split(operation_sep)[1];
+        amount_b = Number(operation_str.split(operation_sep)[2]);
 
-        if (typeof operation_str.split(amounts_separator)[2] != 'undefined' ) {
-            switch (operator_token) {
+        if (typeof operation_str.split(operation_sep)[2] != 'undefined' ) {
+            switch (prev_operator) {
                 case '+':
-                    subtotal = amount_a + amount_b;
+                    total = amount_a + amount_b;
                 break;
                 case '-':
-                    subtotal = amount_a - amount_b;
+                    total = amount_a - amount_b;
                 break;
                 case '×':
-                    subtotal = amount_a * amount_b;
+                    total = amount_a * amount_b;
                 break;
                 case '÷':
-                    subtotal = amount_a / amount_b;
+                    total = amount_a / amount_b;
                 break;
                 default:
             }
-            operation_str = subtotal.toString();
+            operation_str = total.toString();
         }else{
-            subtotal = amount_a;
+            total = amount_a;
         }
 
-        subtotal = formatNumber(subtotal);
+        total = formatNumber(total);
     },
     formatNumber = function(number) {
         var parts = number.toString().split(".");
@@ -115,16 +109,16 @@ var title = 'simpleCalculator',
         return parts.join(".");
     };
 
-$scope.$watch('app.totalDisplay.length', function (length) {
-    if (length >= max_display_total) {
+$scope.$watch('app.totalDisplay.length', function (len) {
+    if (len >= max_int_entries) {
         $scope.app.sizeTotal = 'small';
     }else{
         $scope.app.sizeTotal = null;
     }
 });
 
-$scope.$watch('app.memoryDisplay.length', function (length) {
-    if (length >= max_display_memory) {
+$scope.$watch('app.memoryDisplay.length', function (len) {
+    if (len >= max_display_mem) {
         $scope.app.sizeMemory = 'small';
     }else{
         $scope.app.sizeMemory = null;
@@ -141,38 +135,34 @@ $scope.app = {
     clearAll: function(){
         showMessage(title, false);
         operation_end = false;
-        operator_prev = null;
-        hasOperator = false;
-        operator_token = null;
+        has_operator = false;
+        prev_operator = null;
         operation_str = '';
         int_str = '';
         int_entries = 0;
 
-        is_decimal = false;
+        is_dec = false;
         dec_entries = 0;
-        decimal_str = '';
+        dec_str = '';
 
         last_char = null;
-        last_visible_char = null;
+        last_vis_char = null;
 
-        total = 0;
-
-        memory_str = '';
-        memory_length = 0;
+        mem_str = '';
+        mem_len = 0;
 
         $scope.app.totalDisplay = 0;
-        $scope.app.memoryDisplay = memory_str;
+        $scope.app.memoryDisplay = mem_str;
         $scope.app.sizeTotal = null;
         $scope.app.sizeMemory = null;
     },
     addEntry: function(entry){
-        if (memory_length < max_display_memory) {
-            hasOperator = false;
-            operator_prev = null;
-            format_number = true;
+        if (mem_len < max_display_mem) {
+            has_operator = false;
+            is_num = true;
             checkOperation();
 
-            if (is_decimal) {
+            if (is_dec) {
                 addDecimal(entry);
             }else{
                 addInteger(entry);
@@ -182,19 +172,19 @@ $scope.app = {
         }
     },
     addDecimalPoint: function(){
-        format_number = false;
-        if (memory_length < max_display_memory) {
+        is_num = false;
+        if (mem_len < max_display_mem) {
             checkOperation();
-            last_char = memory_str.charAt(memory_length-1);
-            last_visible_char = memory_str.charAt(memory_length-2);
-            if (is_decimal === false) {
-                has_decimal_point = true;
-                is_decimal = true;
+            last_char = mem_str.charAt(mem_len-1);
+            last_vis_char = mem_str.charAt(mem_len-2);
+            if (is_dec === false) {
+                has_dec_point = true;
+                is_dec = true;
                 showMessage(title, false);
-                memory_str += decimal_point;
-                operation_str += decimal_point;
-                displayOperation(memory_str, decimal_point, true);
-                memory_length++;
+                mem_str += dec_point;
+                operation_str += dec_point;
+                displayOperation(mem_str, dec_point, true);
+                mem_len++;
             }
         }else {
             showMessage('Memory Length Exceeded', true);
@@ -203,31 +193,29 @@ $scope.app = {
     addOperator: function(operator){
         showMessage(title, false);
         operation_end = false;
-        format_number = false;
-        if (operator_prev !== operator) {
+        is_num = false;
+        if (prev_operator !== operator) {
 
-            if (memory_length < max_display_memory) {
-                is_decimal = false;
+            if (mem_len < max_display_mem) {
+                is_dec = false;
                 int_entries = 0;
                 int_str = '';
                 dec_entries = 0;
-                decimal_str = '';
+                dec_str = '';
 
-                if (hasOperator === false) {
+                if (has_operator === false) {
                     calculateSubtotal();
-                    operation_str += amounts_separator + operator + amounts_separator;
-                    hasOperator = true;
-                    memory_str += operator;
+                    operation_str += operation_sep + operator + operation_sep;
+                    has_operator = true;
+                    mem_str += operator;
+                    displayOperation(mem_str, operator, false);
                     operator_entries++;
-                    displayOperation(memory_str, operator, false);
-                    operator_prev = operator;
-                    memory_length ++;
+                    mem_len ++;
                 }else{
-                    memory_str = memory_str.substr(0, memory_str.length - 1);
-                    memory_str += operator;
-                    operation_str = operation_str.substr(0, operation_str.length - 2) + operator + amounts_separator;
-                    displayOperation(memory_str, operator, false);
-                    operator_prev = operator;
+                    mem_str = mem_str.substr(0, mem_str.length - 1);
+                    mem_str += operator;
+                    operation_str = operation_str.substr(0, operation_str.length - 2) + operator + operation_sep;
+                    displayOperation(mem_str, operator, false);
                 }
             }else{
                 showMessage('Memory Length Exceeded', true);
@@ -235,16 +223,16 @@ $scope.app = {
         }
     },
     calculate: function(){
-        var full_memory = memory_str + ' = ' + subtotal;
-        if (memory_length < max_display_memory) {
-            if (operator_prev !== '/' && operator_prev !== '*' && operator_prev !== '+' && operator_prev !== '-') {
+        if (mem_len < max_display_mem) {
+            if (is_num) {
                 calculateSubtotal();
-                displayOperation(full_memory, subtotal, false);
+                full_mem = mem_str + ' = ' + total;
+                displayOperation(full_mem, total, false);
                 operation_end = true;
             }
         }else{
             calculateSubtotal();
-            displayOperation(full_memory, subtotal, false);
+            displayOperation(full_mem, total, false);
             showMessage('Memory Length Exceeded', true);
         }
     }
