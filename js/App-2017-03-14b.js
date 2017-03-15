@@ -36,8 +36,8 @@ var title = 'simpleCalculator',
     max_display_total = 9,
 
     showMessage = function (message, warning) {
-          $scope.app.warning = warning;
-          $scope.app.title = message;
+      $scope.app.displayWarning = warning;
+      $scope.app.title = message;
     },
     displayOperation = function (memory, total, concat) {
         if (format_number === true) {
@@ -65,7 +65,9 @@ var title = 'simpleCalculator',
             displayOperation(memory_str, int_str, false);
             int_entries ++;
             memory_length ++;
+            // showLog('addInteger', null, null);
         }else{
+            // displayOperation(memory_str, subtotal, false);
             showMessage('Integer Limit Exceeded', true);
         }
     },
@@ -77,7 +79,9 @@ var title = 'simpleCalculator',
             displayOperation(memory_str, int_str + decimal_point + decimal_str, false);
             dec_entries ++;
             memory_length ++;
+            // showLog('addDecimal', null, null);
         }else{
+            // displayOperation(memory_str, subtotal, false);
             showMessage('Decimal Limit Exceeded', true);
         }
     },
@@ -102,6 +106,15 @@ var title = 'simpleCalculator',
                 break;
                 default:
             }
+            // console.log('operation_str: ', operation_str);
+            // console.log('operator_token: ', operator_token);
+            // console.log('operation_str[0]: ', operation_str.split(amounts_separator)[0]);
+            // console.log('operation_str[1]: ', operation_str.split(amounts_separator)[1]);
+            // console.log('operation_str[2]: ', operation_str.split(amounts_separator)[2]);
+            // console.log('amount_a: ', amount_a);
+            // console.log('amount_b: ', amount_b);
+            // console.log('subtotal: ', subtotal);
+            // operator_entries = 0;
             operation_str = subtotal.toString();
         }else{
             subtotal = amount_a;
@@ -132,12 +145,43 @@ $scope.$watch('app.memoryDisplay.length', function (length) {
 });
 
 $scope.app = {
-    title: title,
+    title: 'simpleCalculator',
     warning: null,
     sizeMemory: null,
     memoryDisplay: '',
     sizeTotal: null,
     totalDisplay: '0',
+    // clearEntry: function(){
+    //     last_char = memory_str.substr(memory_length - 1); 
+    //     memory_str = memory_str.substr(0, memory_length - 1);
+    //     total_display_str = $scope.app.totalDisplay.substr(0, $scope.app.totalDisplay.length - 1);
+    //     console.log('memory_str:', memory_str);
+    //     console.log('substr:', memory_str.substr(0, memory_length - 1));
+    //     console.log('memory_length:', memory_length);
+
+    //     // $scope.app.memoryDisplay = memory_str;
+    //     // $scope.app.totalDisplay = memory_str;
+    //     // if (amount_b == null) {
+    //     //     displayOperation(memory_str, memory_str, false);
+    //     // }else{
+    //     // }
+    //     displayOperation(memory_str, total_display_str, false);
+
+    //     operation_str = operation_str.substr(0, operation_str.length - 1);
+    //     memory_length --;
+
+    //     if (has_decimal_point) {
+    //         decimal_str = decimal_str.substr(0, decimal_str.length - 2);
+    //         dec_entries --;
+    //         if (last_char == '.') {
+    //             has_decimal_point = false;
+    //         }
+    //     }else{
+    //         int_str = int_str.substr(0, int_entries - 1);
+    //         int_entries --;
+    //     }
+
+    // },
     clearAll: function(){
         showMessage(title, false);
         operation_end = false;
@@ -164,6 +208,8 @@ $scope.app = {
         $scope.app.memoryDisplay = memory_str;
         $scope.app.sizeTotal = null;
         $scope.app.sizeMemory = null;
+
+        // showLog('CLEAR');
     },
     addEntry: function(entry){
         if (memory_length < max_display_memory) {
@@ -196,6 +242,7 @@ $scope.app = {
                 displayOperation(memory_str, decimal_point, true);
                 memory_length++;
             }
+            // showLog('ADD DECIMAL POINT', 'decimal', '.');
         }else {
             showMessage('Memory Length Exceeded', true);
         }
@@ -213,6 +260,7 @@ $scope.app = {
                 dec_entries = 0;
                 decimal_str = '';
 
+
                 if (hasOperator === false) {
                     calculateSubtotal();
                     operation_str += amounts_separator + operator + amounts_separator;
@@ -229,22 +277,53 @@ $scope.app = {
                     displayOperation(memory_str, operator, false);
                     operator_prev = operator;
                 }
+                // console.log('operation_str: ', operation_str);
+                // console.log('---------------------------------------');
             }else{
+                // showMessage($scope.app.title);
                 showMessage('Memory Length Exceeded', true);
             }
         }
+        // displayOperation(memory_str, subtotal, false);
+        // showLog('ADD OPERATOR', 'operator_token', operator_token);
     },
     calculate: function(){
-        var full_memory = memory_str + ' = ' + subtotal;
         if (memory_length < max_display_memory) {
-            if (operator_prev !== '/' && operator_prev !== '*' && operator_prev !== '+' && operator_prev !== '-') {
+            if (operator_prev !== '/' && operator_prev !== '*' && operator_prev !== '+' && operator_prev !== '-'/* && operator_token !== null*/) {
                 calculateSubtotal();
-                displayOperation(full_memory, subtotal, false);
+                displayOperation(memory_str + ' = ' + subtotal, subtotal, false);
+
+                // console.log('operator_token: ', operator_token);
+                // console.log('memory_str: ', memory_str);
+                // console.log('operation_str: ', operation_str);
+                // console.log('subtotal: ', subtotal);
                 operation_end = true;
+                return;
+                    // calculate();
+                    total = (new Function('return ' + memory_str))();
+                    // parseAmount();
+                    // console.log('memory_str: ', memory_str);
+                    // console.log('total: ', total);
+                    // return;
+
+                    var is_decimal_amount = total.toString().match(/\./g);
+
+                    if (is_decimal_amount) {
+                        total_str = total.toFixed(2).toString();
+                    }else{
+                      total_str = total.toString();
+                    }
+
+                    displayOperation(memory_str + '=' + total_str, total_str, false);
+
+                    memory_str = total;
+                    memory_length = total.length;
+                    // current_amount = 0;
+                    operator_token = null;
             }
         }else{
-            calculateSubtotal();
-            displayOperation(full_memory, subtotal, false);
+            // displayOperation(memory_str + '=' + total_str, total_str, false);
+            displayOperation(memory_str, subtotal, false);
             showMessage('Memory Length Exceeded', true);
         }
     }

@@ -49,6 +49,16 @@ body
   // border: solid 5px #333
   // background-color: $calculatorBG
 
+  .warning
+    position: absolute
+    top: -0.5em
+    left: 0
+    z-index: 5
+    font-size: 1.5em
+    padding: 0.3em 0.5em
+    background-color: $equalBG
+    color: $calculatorBG
+
   #display
     margin: 0.5em 0 1.5em 2em
     width: 22em
@@ -68,14 +78,15 @@ body
       font-size: 1.25em
       text-align: left
       color: $equalBG
+
     strong
       padding: 0
       font-weight: normal
 
     #total
+      display: block
       height: 60px
       padding-right: 10px
-      // margin-left: 20px
       margin-top: 5px
       font-size: 4em
       line-height: 1em
@@ -87,44 +98,46 @@ body
 
       &.small
         padding: 0 10px 0 0
-        font-size: 1.8em
+        font-size: 1.75em
         line-height: 2em
 
     #history
+      display: block
       word-wrap: break-word
       height: 46px
-      // padding-right: 10px
-      margin-bottom: 10px
-      font-size: 1.5em
+      margin: 5px 0 10px 0
+      font-size: 1.25em
       line-height: 1em
       color: $historyText
 
       &.small
         // padding: 0 0.5em
-        font-size: 1.1em
+        font-size: 1em
         // line-height: 2em
 
 
 
   #keys
     // border-left: solid 5px #333
-    // padding: 1em 0
     position: absolute
     float: left
     width: 100%
     width: 22em
     margin: 0
-    padding-left: 1em
+    padding: 0.2em 0 0 1em
+    // padding-left: 1em
     background-color: rgba(0, 31, 71, 0.75)
     box-shadow: 0.4em -0.4em 6px rgba(0,0,0,0.5)
 
     .col-md-12, .col-md-9
       padding: 0 1px
+      clear: both
+
     .button
+      width: 2.85em
       display: inline-block
       text-align: center
       font-size: 1.75em
-      // width: 100%
       // height: auto
       padding: 0
       // margin: 1px
@@ -140,6 +153,7 @@ body
         display: inline-block
         margin: 0.25em
         width: 2em
+        float: left
         height: 2em
         line-height: 2em
         // color: rgba(0, 31, 71, 0.75)
@@ -167,13 +181,22 @@ body
       &:focus
         // border: none
 
+      &.zero
+        width: 5.6em
+
+        span
+          width: 100%
+
     .equal
+      width: 5em
       position: absolute
+      z-index: 2
       bottom: -1em
       right: -1em
       padding: 0
 
       span
+        width: 100%
         font-size: 3em
         padding: 1.2em 0.1em
         background-color: $equalBG
