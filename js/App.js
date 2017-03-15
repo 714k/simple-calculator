@@ -4,12 +4,10 @@ var title = 'simpleCalculator',
     mem_len = 0,
     mem_str = '',
     max_display_mem = 50,
-    last_char = null,
-    last_vis_char = null,
     full_mem = '',
 
-    has_operator = false,
     operator_entries = 0,
+    has_operator = false,
     prev_operator = null,
 
     int_entries = 0,
@@ -54,8 +52,8 @@ var title = 'simpleCalculator',
     addInteger = function(int){
         if (int_entries < max_int_entries) {
             int_str += int;
-            mem_str += int;
             operation_str += int;
+            mem_str += int;
             displayOperation(mem_str, int_str, false);
             int_entries ++;
             mem_len ++;
@@ -66,8 +64,8 @@ var title = 'simpleCalculator',
     addDecimal = function(dec){
         if (dec_entries < max_dec_entries) {
             dec_str += dec;
-            mem_str += dec;
             operation_str += dec;
+            mem_str += dec;
             displayOperation(mem_str, int_str + dec_point + dec_str, false);
             dec_entries ++;
             mem_len ++;
@@ -145,9 +143,6 @@ $scope.app = {
         dec_entries = 0;
         dec_str = '';
 
-        last_char = null;
-        last_vis_char = null;
-
         mem_str = '';
         mem_len = 0;
 
@@ -175,15 +170,17 @@ $scope.app = {
         is_num = false;
         if (mem_len < max_display_mem) {
             checkOperation();
-            last_char = mem_str.charAt(mem_len-1);
-            last_vis_char = mem_str.charAt(mem_len-2);
+            showMessage(title, false);
             if (is_dec === false) {
                 has_dec_point = true;
                 is_dec = true;
-                showMessage(title, false);
-                mem_str += dec_point;
                 operation_str += dec_point;
-                displayOperation(mem_str, dec_point, true);
+                mem_str += dec_point;
+                if (!has_operator) {
+                    displayOperation(mem_str, dec_point, true);
+                }else{
+                    displayOperation(mem_str, dec_point, false);
+                }
                 mem_len++;
             }
         }else {
